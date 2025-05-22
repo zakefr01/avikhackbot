@@ -1,1 +1,129 @@
-404: Not Found
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aviator Predictor</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #000000, #1c1c1c);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      text-align: center;
+      background: #121212;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 0, 79, 0.5);
+      max-width: 400px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #ff004f;
+    }
+    p {
+      font-size: 1rem;
+      color: #aaa;
+    }
+    .input-section {
+      margin-bottom: 2rem;
+    }
+    input[type="text"] {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      width: 80%;
+      text-align: center;
+      background: #1e1e1e;
+      color: #fff;
+    }
+    .submit-id-btn, .predict-btn, .create-account-btn {
+      background: #ff004f;
+      border: none;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin-top: 1.2rem;
+      transition: background 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .submit-id-btn:hover, .predict-btn:hover, .create-account-btn:hover {
+      background: #e60045;
+    }
+    .result {
+      margin-top: 2rem;
+      font-size: 2rem;
+      color: #00ff88;
+    }
+    .hidden {
+      display: none;
+    }
+    .error-message {
+      color: #ff5555;
+      font-size: 1.1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="input-section" id="idSection">
+      <h1>Aviator Predictor</h1>
+      <input type="text" id="userId" placeholder="Enter your ID" maxlength="10" oninput="this.value=this.value.replace(/[^\d]/g,'')" />
+      <br />
+      <button class="submit-id-btn" id="submitBtn" onclick="submitId()">Submit</button>
+      <div class="error-message" id="errorMessage"></div>
+      <a href="https://affpa.top/L?tag=d_3400715m_97c_&site=3400715&ad=97&r=registration" class="create-account-btn hidden" id="createAccountBtn">Create new account</a>
+    </div>
+
+    <div id="predictSection" class="hidden">
+      <h1>Next Coefficient</h1>
+      <p>Tap the button to reveal your next Aviator signal</p>
+      <button class="predict-btn" onclick="predict()">Predict Now</button>
+      <div class="result" id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    function submitId() {
+      const userId = document.getElementById('userId').value.trim();
+      const isNumeric = /^\d{1,10}$/.test(userId);
+
+      if (!isNumeric) {
+        alert('Please enter a valid numeric ID (up to 10 digits)');
+        return;
+      }
+
+      if (!userId.startsWith("12")) {
+        document.getElementById("errorMessage").innerText = "You need to create new account and top up 1600 LKR. Use GML777 promo code to take bonuses from me";
+        document.getElementById("submitBtn").classList.add("hidden");
+        document.getElementById("createAccountBtn").classList.remove("hidden");
+        return;
+      }
+
+      document.getElementById('idSection').classList.add('hidden');
+      document.getElementById('predictSection').classList.remove('hidden');
+    }
+
+    function predict() {
+      const min = 1.01;
+      const max = 5.0;
+      const randomCoef = (Math.random() * (max - min) + min).toFixed(2);
+      document.getElementById('result').innerText = 💥 ${randomCoef}x;
+    }
+  </script>
+</body>
+</html>
