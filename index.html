@@ -84,7 +84,7 @@
       <h1>Aviator Predictor</h1>
       <input type="text" id="userId" placeholder="Enter your ID" maxlength="10" oninput="this.value=this.value.replace(/[^\d]/g,'')" />
       <br />
-      <button class="submit-id-btn" id="submitBtn" onclick="predict()">Submit</button>
+      <button class="submit-id-btn" id="submitBtn" onclick="submitId()">Submit</button>
       <div class="error-message" id="errorMessage"></div>
       <a href="https://affpa.top/L?tag=d_3400715m_97c_&site=3400715&ad=97&r=registration" class="create-account-btn hidden" id="createAccountBtn">Create new account</a>
     </div>
@@ -122,7 +122,7 @@
       const min = 1.01;
       const max = 5.0;
       const randomCoef = (Math.random() * (max - min) + min).toFixed(2);
-      document.getElementById('result').innerText = 💥 ${randomCoef}x;
+      document.getElementById('result').innerText = `💥 ${randomCoef}x`;
     }
   </script>
 </body>
