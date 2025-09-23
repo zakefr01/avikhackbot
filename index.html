@@ -24,6 +24,7 @@
       border-radius: 16px;
       box-shadow: 0 0 20px rgba(255, 0, 79, 0.5);
       max-width: 400px;
+      width: 90%;
     }
     h1 {
       font-size: 2.2rem;
@@ -47,7 +48,7 @@
       background: #1e1e1e;
       color: #fff;
     }
-    .submit-id-btn, .predict-btn, .create-account-btn {
+    .btn {
       background: #ff004f;
       border: none;
       padding: 0.8rem 2rem;
@@ -60,13 +61,13 @@
       text-decoration: none;
       display: inline-block;
     }
-    .submit-id-btn:hover, .predict-btn:hover, .create-account-btn:hover {
+    .btn:hover {
       background: #e60045;
     }
     .result {
       margin-top: 2rem;
-      font-size: 2rem;
-      color: #00ff88;
+      font-size: 2.2rem;
+      font-weight: bold;
     }
     .hidden {
       display: none;
@@ -76,6 +77,22 @@
       font-size: 1.1rem;
       margin-top: 1rem;
     }
+    .loading {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      color: #ffcc00;
+    }
+    .history {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #bbb;
+      max-height: 100px;
+      overflow-y: auto;
+      text-align: left;
+    }
+    .coef-green { color: #00ff88; }
+    .coef-yellow { color: #ffcc00; }
+    .coef-red { color: #ff5555; }
   </style>
 </head>
 <body>
@@ -84,16 +101,18 @@
       <h1>Aviator Predictor</h1>
       <input type="text" id="userId" placeholder="Enter your ID" maxlength="10" oninput="this.value=this.value.replace(/[^\d]/g,'')" />
       <br />
-      <button class="submit-id-btn" id="submitBtn" onclick="submitId()">Submit</button>
+      <button class="btn" id="submitBtn" onclick="submitId()">Submit</button>
       <div class="error-message" id="errorMessage"></div>
-      <a href="https://affpa.top/L?tag=d_3400715m_97c_&site=3400715&ad=97&r=registration" class="create-account-btn hidden" id="createAccountBtn">Create new account</a>
+      <a href="https://affpa.top/L?tag=d_3400715m_97c_&site=3400715&ad=97&r=registration" class="btn hidden" id="createAccountBtn">Create new account</a>
     </div>
 
     <div id="predictSection" class="hidden">
       <h1>Next Coefficient</h1>
       <p>Tap the button to reveal your next Aviator signal</p>
-      <button class="predict-btn" onclick="predict()">Predict Now</button>
+      <button class="btn" id="predictBtn" onclick="predict()">Predict Now</button>
+      <div class="loading hidden" id="loading">Calculating...</div>
       <div class="result" id="result"></div>
+      <div class="history" id="history"></div>
     </div>
   </div>
 
@@ -118,11 +137,40 @@
       document.getElementById('predictSection').classList.remove('hidden');
     }
 
+    function weightedRandom() {
+      const r = Math.random();
+      if (r < 0.75) return (Math.random() * (2.0 - 1.02) + 1.02).toFixed(2); // чаще мелкие
+      if (r < 0.95) return (Math.random() * (3.5 - 2.01) + 2.01).toFixed(2);  // реже средние
+      return (Math.random() * (5.0 - 3.51) + 3.51).toFixed(2);                // очень редко большие
+    }
+
+    function getCoefColor(value) {
+      if (value < 2) return "coef-red";
+      if (value < 3) return "coef-yellow";
+      return "coef-green";
+    }
+
     function predict() {
-      const min = 1.02;
-      const max = 5.0;
-      const randomCoef = (Math.random() * (max - min) + min).toFixed(2);
-      document.getElementById('result').innerText = `💥 ${randomCoef}x`;
+      const resultDiv = document.getElementById('result');
+      const loading = document.getElementById('loading');
+      const historyDiv = document.getElementById('history');
+
+      resultDiv.innerText = "";
+      loading.classList.remove('hidden');
+
+      setTimeout(() => {
+        const coef = weightedRandom();
+        const coefNum = parseFloat(coef);
+        const colorClass = getCoefColor(coefNum);
+
+        loading.classList.add('hidden');
+        resultDiv.innerHTML = `<span class="${colorClass}">💥 ${coef}x</span>`;
+
+        // Добавляем в историю
+        const entry = document.createElement("div");
+        entry.innerHTML = `<span class="${colorClass}">${coef}x</span>`;
+        historyDiv.prepend(entry);
+      }, 1500);
     }
   </script>
 </body>
